@@ -1,4 +1,4 @@
-// Package cnt writes a countdown to stdout, then sends a desktop notification when complete.
+// Package cnt writes a countdown to stdout, then optionally sends a desktop notification when complete.
 package main
 
 import (
@@ -32,7 +32,7 @@ func cntdn(d time.Duration, u time.Duration, n bool) {
 		time.Sleep(u)
 		cntdn(d-u, u, n)
 	} else {
-		fmt.Fprintln(os.Stdout, "CNT complete")
+    fmt.Fprintln(os.Stdout, "cnt: complete")
 		if n {
 			notify()
 		}
@@ -46,8 +46,8 @@ func quietPrint(d time.Duration) {
 }
 
 func notify() {
-	err := beeep.Notify("CNT", "Complete", "./img/taco.png")
+	err := beeep.Notify("CNT", "Your coundown is complete", "./img/taco.png")
 	if err != nil {
-		log.Fatalf("cnt failed: %v", err)
+		log.Fatalf("cnt failed to notify: %v", err)
 	}
 }
